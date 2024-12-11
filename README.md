@@ -1,2 +1,2 @@
-# wcmini-lightcone
-ai tools collections
+# wcmini
+wechat mini program
