@@ -1,3 +1,23 @@
 <view class="container">
-  <text>推荐页面</text>
+  <view class="card-container">
+    <!-- 每日趣闻卡片 -->
+    <view class="card daily-news">
+      <view class="card-title">
+        <text>每日趣闻</text>
+      </view>
+      <view class="card-content">
+        <text class="card-description">发现有趣的事物</text>
+      </view>
+    </view>
+
+    <!-- 今天吃什么卡片 -->
+    <view class="card food-recommendation">
+      <view class="card-title">
+        <text>今天吃什么</text>
+      </view>
+      <view class="card-content">
+        <text class="card-description">寻找美食灵感</text>
+      </view>
+    </view>
+  </view>
 </view>
