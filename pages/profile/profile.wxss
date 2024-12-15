@@ -1,6 +1,11 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.wa-comp-user-center-userCenter .container2 {
+  height: 80px !important;
+  overflow: hidden !important;
+}
+
+.wa-comp-user-center-userCenter .container2 image {
+  height: 80px !important;
+  min-height: 80px !important;
+  max-height: 80px !important;
+  object-fit: cover !important;
 }

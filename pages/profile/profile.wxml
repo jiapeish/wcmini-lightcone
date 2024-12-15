@@ -1,3 +1,1 @@
-<view class="container">
-  <text>个人中心</text>
-</view>
+<user-center banner="{{banner}}" actions="{{actions}}"></user-center>

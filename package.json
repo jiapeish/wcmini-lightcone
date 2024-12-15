@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@cloudbase-module/user-center": "^0.0.3",
+    "@cloudbase/auth": "latest",
+    "@cloudbase/js-sdk": "^1.7.2",
+    "@cloudbase/weda-client": "latest",
+    "@cloudbase/weda-ui-mp": "latest"
+  }
+}

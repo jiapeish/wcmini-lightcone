@@ -1,0 +1,45 @@
+<a id="container1" style="{{container1.style}};{{style}}" className="wa-comp-user-center-userCenter {{container1.className}} {{className}}" data="{{container1.data}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+	<a id="container2" style="{{container2.style}}" className="{{container2.className}}" data="{{container2.data}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+		<b id="image1" style="{{image1.style}}" className="{{image1.className}}" alt="{{image1.alt}}" fit="{{image1.fit}}" src="{{image1.src}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+	</a>
+	<a id="container3" style="{{container3.style}}" className="{{container3.className}}" data="{{container3.data}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+		<a id="container4" style="{{container4.style}}" className="{{container4.className}}" data="{{container4.data}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+			<b id="image2" style="{{image2.style}}" className="{{image2.className}}" alt="{{image2.alt}}" fit="{{image2.fit}}" src="{{image2.src}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+			<c id="text1" style="{{text1.style}}" className="{{text1.className}}" maxLines="{{text1.maxLines}}" text="{{text1.text}}" bind:attached="__mnt__" bind:detached="__unmnt__" bind:tap="ontext1$tap" bind:wh2200gi95d_success="ontext1$wh2200gi95d_success">{{text1.text}}</c>
+		</a>
+		<block id="{{'repeater1_item'+ '-' + irepeater1_item}}" wx:for="{{repeater1_item}}" wx:for-index="irepeater1_item" wx:key="$$i">
+			<d id="{{'grid1'+ '-' + irepeater1_item}}" style="{{grid1[irepeater1_item].style}}" className="{{grid1[irepeater1_item].className}}" gutterX="{{grid1[irepeater1_item].gutterX}}" template="{{grid1[irepeater1_item].template}}" bind:attached="__mnt__" bind:detached="__unmnt__" bind:tap="ongrid1$tap" bind:wsvyme6ybto_success="ongrid1$wsvyme6ybto_success" bind:wr5djjqotgb_success="ongrid1$wr5djjqotgb_success" bind:w53w5b41aps_success="ongrid1$w53w5b41aps_success">
+				<e id="{{'row1'+ '-' + irepeater1_item}}" style="{{row1[irepeater1_item].style}}" className="{{row1[irepeater1_item].className}}" alignItems="{{row1[irepeater1_item].alignItems}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+					<f id="{{'col1'+ '-' + irepeater1_item}}" style="{{col1[irepeater1_item].style}}" className="{{col1[irepeater1_item].className}}" alignSelf="{{col1[irepeater1_item].alignSelf}}" widthType="{{col1[irepeater1_item].widthType}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+						<g id="{{'icon1'+ '-' + irepeater1_item}}" style="{{icon1[irepeater1_item].style}}" className="{{icon1[irepeater1_item].className}}" src="{{icon1[irepeater1_item].src}}" type="{{icon1[irepeater1_item].type}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+					</f>
+					<f id="{{'col2'+ '-' + irepeater1_item}}" style="{{col2[irepeater1_item].style}}" className="{{col2[irepeater1_item].className}}" alignSelf="{{col2[irepeater1_item].alignSelf}}" widthType="{{col2[irepeater1_item].widthType}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+						<h id="{{'share1'+ '-' + irepeater1_item}}" style="{{share1[irepeater1_item].style}}" className="{{share1[irepeater1_item].className}}" image="{{share1[irepeater1_item].image}}" params="{{share1[irepeater1_item].params}}" path="{{share1[irepeater1_item].path}}" size="{{share1[irepeater1_item].size}}" text="{{share1[irepeater1_item].text}}" title="{{share1[irepeater1_item].title}}" type="{{share1[irepeater1_item].type}}" withParams="{{share1[irepeater1_item].withParams}}" bind:attached="__mnt__" bind:detached="__unmnt__">{{share1[irepeater1_item].text}}</h>
+						<i id="{{'customerService1'+ '-' + irepeater1_item}}" style="{{customerService1[irepeater1_item].style}}" className="{{customerService1[irepeater1_item].className}}" sendMessageImg="{{customerService1[irepeater1_item].sendMessageImg}}" sendMessagePath="{{customerService1[irepeater1_item].sendMessagePath}}" sendMessageTitle="{{customerService1[irepeater1_item].sendMessageTitle}}" sessionFrom="{{customerService1[irepeater1_item].sessionFrom}}" showMessageCard="{{customerService1[irepeater1_item].showMessageCard}}" template="{{customerService1[irepeater1_item].template}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+							<c id="{{'text3'+ '-' + irepeater1_item}}" style="{{text3[irepeater1_item].style}}" className="{{text3[irepeater1_item].className}}" maxLines="{{text3[irepeater1_item].maxLines}}" text="{{text3[irepeater1_item].text}}" bind:attached="__mnt__" bind:detached="__unmnt__">{{text3[irepeater1_item].text}}</c>
+						</i>
+						<c id="{{'text2'+ '-' + irepeater1_item}}" style="{{text2[irepeater1_item].style}}" className="{{text2[irepeater1_item].className}}" maxLines="{{text2[irepeater1_item].maxLines}}" text="{{text2[irepeater1_item].text}}" bind:attached="__mnt__" bind:detached="__unmnt__">{{text2[irepeater1_item].text}}</c>
+					</f>
+					<f id="{{'col3'+ '-' + irepeater1_item}}" style="{{col3[irepeater1_item].style}}" className="{{col3[irepeater1_item].className}}" alignSelf="{{col3[irepeater1_item].alignSelf}}" widthType="{{col3[irepeater1_item].widthType}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+						<g id="{{'icon2'+ '-' + irepeater1_item}}" style="{{icon2[irepeater1_item].style}}" className="{{icon2[irepeater1_item].className}}" name="{{icon2[irepeater1_item].name}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+					</f>
+				</e>
+			</d>
+			<j id="{{'divider1'+ '-' + irepeater1_item}}" style="{{divider1[irepeater1_item].style}}" className="{{divider1[irepeater1_item].className}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+		</block>
+		<k id="button1" style="{{button1.style}}" className="{{button1.className}}" block="{{button1.block}}" icon="{{button1.icon}}" text="{{button1.text}}" theme="{{button1.theme}}" bind:attached="__mnt__" bind:detached="__unmnt__">{{button1.text}}</k>
+	</a>
+	<l id="modal1" style="{{modal1.style}}" className="{{modal1.className}}" closeType="{{modal1.closeType}}" defaultMaskShow="{{modal1.defaultMaskShow}}" defaultShow="{{modal1.defaultShow}}" position="{{modal1.position}}" template="{{modal1.template}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+		<c id="text4" style="{{text4.style}}" className="{{text4.className}}" level="{{text4.level}}" maxLines="{{text4.maxLines}}" text="{{text4.text}}" bind:attached="__mnt__" bind:detached="__unmnt__" slot="headerSlot">{{text4.text}}</c>
+		<m id="form1" style="{{form1.style}}" className="{{form1.className}}" _id="{{form1['_id']}}" datasourceType="{{form1.datasourceType}}" formType="{{form1.formType}}" formType_bind="{{form1.formType_bind}}" initialValues="{{form1.initialValues}}" lgWidth="{{form1.lgWidth}}" methodCreate="{{form1.methodCreate}}" methodGetItem="{{form1.methodGetItem}}" methodUpdate="{{form1.methodUpdate}}" paramGetItem="{{form1.paramGetItem}}" value="{{form1.value}}" bind:attached="__mnt__" bind:detached="__unmnt__" bind:onDataChange="onform1$onDataChange" slot="contentSlot">
+			<a id="container5" style="{{container5.style}}" className="{{container5.className}}" bind:attached="__mnt__" bind:detached="__unmnt__" slot="contentSlot">
+				<n id="uploadImage1" style="{{uploadImage1.style}}" className="{{uploadImage1.className}}" callbacks="{{uploadImage1.callbacks}}" label="{{uploadImage1.label}}" name="{{uploadImage1.name}}" required="{{uploadImage1.required}}" requiredMsg="{{uploadImage1.requiredMsg}}" showShape="{{uploadImage1.showShape}}" single="{{uploadImage1.single}}" status="{{uploadImage1.status}}" value="{{uploadImage1.value}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+				<o id="input1" style="{{input1.style}}" className="{{input1.className}}" extra="{{input1.extra}}" inputValue="{{input1.inputValue}}" label="{{input1.label}}" name="{{input1.name}}" placeholder="{{input1.placeholder}}" prefixIcon="{{input1.prefixIcon}}" prefixType="{{input1.prefixType}}" required="{{input1.required}}" requiredMsg="{{input1.requiredMsg}}" status="{{input1.status}}" suffixIcon="{{input1.suffixIcon}}" suffixType="{{input1.suffixType}}" template="{{input1.template}}" bind:attached="__mnt__" bind:detached="__unmnt__"/>
+				<a id="container6" style="{{container6.style}}" className="{{container6.className}}" data="{{container6.data}}" bind:attached="__mnt__" bind:detached="__unmnt__">
+					<k id="button2" style="{{button2.style}}" className="{{button2.className}}" block="{{button2.block}}" icon="{{button2.icon}}" text="{{button2.text}}" bind:attached="__mnt__" bind:detached="__unmnt__" bind:tap="onbutton2$tap" bind:w0280auq5ch_success="onbutton2$w0280auq5ch_success" bind:wdqstak8gv5_success="onbutton2$wdqstak8gv5_success" bind:wt1gc8gzwl4_success="onbutton2$wt1gc8gzwl4_success" bind:w0280auq5ch_fail="onbutton2$w0280auq5ch_fail">{{button2.text}}</k>
+				</a>
+			</a>
+		</m>
+		<g id="icon3" style="{{icon3.style}}" className="{{icon3.className}}" name="{{icon3.name}}" bind:attached="__mnt__" bind:detached="__unmnt__" bind:tap="onicon3$tap" slot="headerSlot"/>
+	</l>
+</a>

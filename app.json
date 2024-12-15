@@ -34,5 +34,7 @@
         "selectedIconPath": "pages/images/user_selected.png"
       }
     ]
-  }
+  },
+  "useExtendedLib": { "weui": true },
+  "cloud": true
 }
