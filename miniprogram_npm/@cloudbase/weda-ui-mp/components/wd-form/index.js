@@ -112,7 +112,7 @@ Component({
         });
       });
     },
-    setReadOnly() {
+    setReadOnly(val = true) {
       Object.keys(this.data._formItemMap).forEach((name) => {
         const items = this.data._formItemMap[name];
         items.forEach((item) => {
@@ -120,7 +120,7 @@ Component({
             console.error('表单组件缺少setReadOnly方法:', item);
             return;
           }
-          item.setReadOnly(true);
+          item.setReadOnly(val);
         });
       });
     },
@@ -136,7 +136,7 @@ Component({
         }
         items.forEach((item) => {
           if (item.handleValidate) {
-            const validate = item.handleValidate();
+            const validate = item.handleValidate(false);
             const { name, label } = item;
 
             if (validate) {
@@ -607,13 +607,14 @@ Component({
             items = [items];
           }
           items.forEach((item) => {
-            const recoverFn = item.setReadOnly(true);
+            const recoverFn = (val) => item.setReadOnly(val);
+            recoverFn(true);
             this.data._recoverFns.push(recoverFn);
             this.setData({ _recoverFns: this.data._recoverFns });
           });
         });
       } else {
-        this.data._recoverFns.forEach((fn) => fn());
+        this.data._recoverFns.forEach((fn) => fn(false));
         this.setData({ _recoverFns: [] });
       }
       this.setData({ _previousFormType: formType });
@@ -629,9 +630,6 @@ Component({
         paramGetItem,
         value
       ) {
-        if (formType === 'read') {
-          this.setReadOnly();
-        }
         const isDataModel = ![
           'connector',
           'custom-connector',

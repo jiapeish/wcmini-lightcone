@@ -34,6 +34,8 @@
       bind:success="handleEvent"
       bind:error="handleEvent"
       callbacks="{{callbacks}}"
+      uploadButtonText="{{uploadButtonText}}"
+      uploadTipText="{{uploadTipText}}"
     />
   </wd-form-item>
 </block>

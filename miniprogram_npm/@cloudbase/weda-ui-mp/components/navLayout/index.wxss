@@ -110,7 +110,11 @@
   width: 100%;
   height: 100%;
 }
-
+.weda-grid-navigation__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .weda-grid-navigation .weda-grid-navigation__col .weda-grid-navigation__text {
   font-size: 0.85714em;
   line-height: 1.42857em;

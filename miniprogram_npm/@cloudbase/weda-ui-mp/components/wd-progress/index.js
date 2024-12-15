@@ -10,9 +10,14 @@ import {
 Component({
   options: {
     virtualHost: true,
+    multipleSlots: true,
   },
   behaviors: [itemBehavior, commonCompBehavior, formFieldBehavior],
   properties: {
+    showPercent: {
+      type: Boolean,
+      value: false,
+    },
     min: {
       type: Number,
       value: 0,
@@ -58,6 +63,7 @@ Component({
         visible,
         disabled,
         readOnly,
+        showPercent,
         min,
         max,
         step,
@@ -70,6 +76,7 @@ Component({
         visible,
         disabled,
         readOnly,
+        showPercent,
         min,
         max,
         step,
@@ -119,7 +126,7 @@ Component({
     'value, min, max': function () {
       this._computePercent();
     },
-    'name, value, label, required, visible, disabled, readOnly, min, max, step':
+    'name, value, label, required, visible, disabled, readOnly, showPercent, min, max, step':
       function () {
         this.updateWidgetAPI();
       },

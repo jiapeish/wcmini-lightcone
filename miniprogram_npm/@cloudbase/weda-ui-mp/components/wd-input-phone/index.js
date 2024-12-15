@@ -23,6 +23,9 @@ Component({
       ],
     },
   },
+  data: {
+    pattern: '^[()\\d\\s+\\-ext]{0,20}$',
+  },
   methods: {
     convertValueToString(val) {
       // 数据源认string

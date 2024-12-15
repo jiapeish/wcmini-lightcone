@@ -37,6 +37,9 @@ Component({
     handleBlur: function (e) {
       this.triggerEvent('blur', e.detail);
     },
+    handleConfirm: function (e) {
+      this.triggerEvent('confirm', e.detail);
+    },
     updateWidgetAPI: function () {
       const { name, value, label, required, visible, disabled, readOnly } =
         this.data;

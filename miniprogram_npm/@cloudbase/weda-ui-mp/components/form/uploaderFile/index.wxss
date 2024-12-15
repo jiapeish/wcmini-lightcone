@@ -31,7 +31,7 @@
 /* theme */
 .weda-uploader-files__btn {
   margin: 0;
-  width: 88px;
+  width: auto;
   height: 32px;
   padding: 0;
   display: flex;
@@ -132,27 +132,19 @@
 }
 
 /* 标准化样式适配 start */
-.wd-form-item.wd-mp-upload-file-root
-  .weda-uploader-files
-  .weda-uploader-files__btn-contain {
+.wd-form-item.wd-mp-upload-file-root .weda-uploader-files .weda-uploader-files__btn-contain {
   padding: 0;
 }
 
-.wd-form-item.wd-mp-upload-file-root
-  .weda-uploader-files
-  .weda-uploader-files__file-status {
+.wd-form-item.wd-mp-upload-file-root .weda-uploader-files .weda-uploader-files__file-status {
   width: auto;
 }
 
-.wd-form-item.wd-mp-upload-file-root
-  .weda-uploader-files
-  .weda-uploader-files__file-foot {
+.wd-form-item.wd-mp-upload-file-root .weda-uploader-files .weda-uploader-files__file-foot {
   margin: 0;
 }
 
-.wd-form-item.wd-mp-upload-file-root
-  .weda-uploader-files
-  .weda-uploader-files__item {
+.wd-form-item.wd-mp-upload-file-root .weda-uploader-files .weda-uploader-files__item {
   padding: 0;
 }
 

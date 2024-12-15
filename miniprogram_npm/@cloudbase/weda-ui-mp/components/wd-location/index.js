@@ -14,6 +14,10 @@ Component({
     customLocation: {
       type: null,
     },
+    id: {
+      Type: String,
+      value: '',
+    },
   },
   data: {
     _oldLocationValue: null,
@@ -30,6 +34,9 @@ Component({
       const e = { detail: { value: null } };
       this.handleChange(e);
     },
+    handleError: function (e) {
+      this.triggerEvent('error', e.detail);
+    },
   },
   observers: {
     'name, value, label, required, visible, disabled, readOnly, before, after':
@@ -44,6 +51,7 @@ Component({
   lifetimes: {
     attached: function () {
       this.updateWidgetAPI();
+      this.setData({ id: this.id });
     },
   },
 });

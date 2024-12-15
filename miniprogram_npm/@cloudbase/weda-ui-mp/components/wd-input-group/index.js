@@ -54,4 +54,12 @@ Component({
       this.setData({ inputGroupCls, root });
     },
   },
+  methods: {
+    // 点击前后缀文字/图标
+    inputAdornmentClick: function (e) {
+      this.triggerEvent('inputAdornmentClick', {
+        type: e.currentTarget.dataset.type,
+      });
+    },
+  },
 });

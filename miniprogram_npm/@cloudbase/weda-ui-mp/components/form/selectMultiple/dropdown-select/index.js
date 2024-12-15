@@ -40,6 +40,10 @@ Component({
       type: Boolean,
       value: true,
     },
+    selectedValue: {
+      type: Array,
+      value: [],
+    },
   },
   data: {
     height: '390px',
@@ -74,6 +78,7 @@ Component({
       const value = event.detail.value;
       this.setData({
         searchValue: value,
+        pageNo: 1,
       });
       this.triggerEvent('search', { value });
     },
@@ -82,6 +87,7 @@ Component({
       this.setData({
         searchValue: '',
         showOption: this.properties.option,
+        pageNo: 1,
       });
       this.triggerEvent('search', { value: '' });
     },
@@ -91,8 +97,10 @@ Component({
         height: '390px',
         focus: false,
         searchValue: '',
+        pageNo: 1,
         showOption: this.properties.option,
       });
+      this.triggerEvent('search', { value: '', noEvent: true });
     },
     closeModal: function () {
       const { option } = this.properties;
@@ -151,12 +159,11 @@ Component({
     // 滚动到底部
     bindscrolltolower: function () {
       if (this.properties.loadStatus === 0) {
-        const pgNum = this.data.pageNo;
-        this.setData({
-          pageNo: pgNum + 1,
-        });
+        const pageNo = this.data.pageNo + 1;
+        this.setData({ pageNo });
         this.triggerEvent('_childFetchData', {
-          pageNo: this.data.pageNo,
+          pageNo,
+          searchValue: this.data.searchValue,
         });
       }
     },
@@ -169,6 +176,7 @@ Component({
         });
         this.triggerEvent('_childFetchData', {
           pageNo: pageNo,
+          searchValue: this.data.searchValue,
         });
       }
     },
@@ -206,8 +214,17 @@ Component({
         });
       }
     },
-    option: function (option) {
-      const selectedCache = option.filter((item) => item.check);
+    selectedValue: function (selectedValue) {
+      const data = Array.isArray(selectedValue)
+        ? selectedValue
+        : [selectedValue];
+      const optionMap = this.properties.option.reduce((pre, cur) => {
+        pre[cur.value] = cur;
+        return pre;
+      }, {});
+      const selectedCache = data
+        .map((d) => optionMap[d])
+        .filter((item) => !!item);
       this.setData({ selectedCache });
     },
   },

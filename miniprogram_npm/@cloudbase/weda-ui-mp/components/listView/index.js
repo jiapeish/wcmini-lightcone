@@ -68,7 +68,7 @@ Component({
       value: [],
     },
     queryCondition: {
-      type: Array,
+      type: null,
       value: [],
     },
     pageSize: {
@@ -126,6 +126,30 @@ Component({
       type: Boolean,
       value: false,
     },
+    selectFieldType: {
+      type: String,
+      value: 'main',
+    },
+    selectFields: {
+      type: Array,
+      value: [],
+    },
+    pageIndex: {
+      type: Number,
+      value: 1,
+    },
+    supportManyRelated: {
+      type: Boolean,
+      value: false,
+    },
+    isSupportMultipleSort: {
+      type: Boolean,
+      value: false,
+    },
+    sorter: {
+      type: Array,
+      value: [],
+    },
   },
   data: {
     pageNo: 1,
@@ -155,14 +179,7 @@ Component({
   methods: {
     // 数据列表设置表达式: 区分前后端分页
     setExpression: function () {
-      const {
-        dataSourceData,
-        enableTotal,
-        total: _total,
-        isRecords,
-        pageSize,
-        pagination,
-      } = this.properties;
+      const { dataSourceData, enableTotal, total: _total, isRecords, pageSize, pagination } = this.properties;
       const { pageNo } = this.data;
       let records = [];
       let total = 0;
@@ -183,10 +200,18 @@ Component({
       const pageStr = this.getPageStr(total, pageNo, pageSize);
       this.data.delayRef.current.initExpr = true;
       this.setData({ records, listTotal: total, pageStr }, () =>
-        this.onSuccessCb({ records, total, isTriggerEmpty: isRecords })
+        this.onSuccessCb({ records, total, isTriggerEmpty: isRecords }),
       );
     },
-
+    // 更新参数
+    getQueryParams: function ({ methodName, params }) {
+      if (methodName === 'wedaGetRecordsV2') {
+        params.getCount = true;
+        params.compatibleWithV1 = true;
+        params.pageNumber = params.pageNo;
+      }
+      return params;
+    },
     // 列表容器拉取数据
     fetchData: async function (param = {}) {
       const {
@@ -214,13 +239,8 @@ Component({
       });
       if (dataSourceType === 'expression') {
         this.setData({ _status: 'loading' });
-        this.data.delayRef.current.exprTimer = setTimeout(
-          () => this.setData({ _status: '' }),
-          3000
-        );
-        !enableTotal &&
-          this.data.delayRef.current.initExpr &&
-          this.setExpression();
+        this.data.delayRef.current.exprTimer = setTimeout(() => this.setData({ _status: '' }), 3000);
+        !enableTotal && this.data.delayRef.current.initExpr && this.setExpression();
         return;
       }
 
@@ -234,12 +254,12 @@ Component({
       if (isModel) {
         dataSourceName = datasource?.name;
         extra = datasource?.extra;
-        methodName =
-          typeof extra?.methodName === 'string'
-            ? extra?.methodName
-            : 'wedaGetRecords';
+        methodName = typeof extra?.methodName === 'string' ? extra?.methodName : 'wedaGetRecords';
         eventDataSource = datasource;
-        const modelParams = getModelParams(this.properties);
+        const modelParams = await getModelParams({
+          ...this.properties,
+          supportManyRelated: methodName === 'wedaGetRecordsV2',
+        });
         tcbParams = { ...tcbParams, ...modelParams };
       } else {
         dataSourceName = bindConnectMetadata?.datasource?.name;
@@ -251,6 +271,11 @@ Component({
 
       if (!(dataSourceName && methodName)) {
         console.warn(`当前请求缺少必要参数 dataSourceName或methodName`);
+        return;
+      }
+      // select为空时，不触发请求
+      if (methodName === 'wedaGetRecordsV2' && !Object.keys(tcbParams?.select)?.length) {
+        console.warn(`当前请求缺少必要参数 select`);
         return;
       }
       this.setData({ _status: 'loading' });
@@ -265,17 +290,20 @@ Component({
               params: tcbParams,
               swr: { forceClear },
             },
-            this.data.records.length
+            this.data.records.length,
           );
         } else {
           data = await callDataSource(
             {
               dataSourceName,
               methodName,
-              params: tcbParams,
+              params: this.getQueryParams({
+                methodName,
+                params: tcbParams,
+              }),
               swr: { forceClear },
             },
-            true
+            true,
           );
         }
         if (fetchVersion !== this.data.delayRef.current.version) return;
@@ -300,7 +328,7 @@ Component({
               total: listTotal,
               isTriggerEmpty: !isDataViewApis,
               datasource: eventDataSource,
-            })
+            }),
         );
       } catch (e) {
         const obj = this.onFailCb(e);
@@ -325,7 +353,10 @@ Component({
           const temp = await app?.cloud?.callDataSource({
             dataSourceName,
             methodName,
-            params: tcbParams,
+            params: this.getQueryParams({
+              methodName,
+              params: tcbParams,
+            }),
             swr,
           });
           records = records.concat(temp.records || []);
@@ -344,10 +375,7 @@ Component({
 
     // 下一页
     handleNext: function () {
-      if (
-        this.data.status === 'loading' ||
-        !(this.properties.pageSize * this.data.pageNo < this.data.listTotal)
-      ) {
+      if (this.data.status === 'loading' || !(this.properties.pageSize * this.data.pageNo < this.data.listTotal)) {
         return;
       }
       this.fetchData({ pageNo: this.data.pageNo + 1 });
@@ -364,9 +392,7 @@ Component({
     // 加载成功(包含为空)事件
     onSuccessCb: function ({ records, total, isTriggerEmpty, datasource }) {
       const beforeDataChange = this.properties.beforeDataChange || ((v) => v);
-      const isDelay = ['loadMoreButton', 'bottomLoad'].includes(
-        this.properties.pagination
-      );
+      const isDelay = ['loadMoreButton', 'bottomLoad'].includes(this.properties.pagination);
       this.triggerEvent('onDataChange', {
         data: beforeDataChange(records),
         state: this.getContextState(),
@@ -403,10 +429,7 @@ Component({
     onFailCb: function (e) {
       this.setData({ _status: 'fail' });
       const code =
-        e?.code ||
-        (this.properties.refType === 'dataView'
-          ? 'WdDataView.QueryError'
-          : 'WdListView.QueryError');
+        e?.code || (this.properties.refType === 'dataView' ? 'WdDataView.QueryError' : 'WdListView.QueryError');
       const obj = {
         code,
         message: `${e?.message}`,
@@ -430,11 +453,9 @@ Component({
     _observerSign: function () {
       setTimeout(() => {
         this.signObserver = this.createIntersectionObserver();
-        this.signObserver
-          .relativeToViewport()
-          .observe('#weda-list-view_sign', (res) => {
-            this.setData({ isVisiableSign: res?.intersectionRatio > 0 });
-          });
+        this.signObserver.relativeToViewport().observe('#weda-list-view_sign', (res) => {
+          this.setData({ isVisiableSign: res?.intersectionRatio > 0 });
+        });
       }, 500);
     },
 
@@ -460,16 +481,13 @@ Component({
         const { pageNo, listTotal } = this.data;
         const { pageSize } = this.properties;
         if (this.properties.pagination === 'pagination') {
-          const pageNoRaw =
-            (pageNo - 1) * pageSize + 1 === listTotal ? pageNo - 1 : pageNo;
+          const pageNoRaw = (pageNo - 1) * pageSize + 1 === listTotal ? pageNo - 1 : pageNo;
           await this.fetchData({
             pageNo: pageNoRaw,
             records: [],
             forceClear: true,
           });
-        } else if (
-          ['loadMoreButton', 'bottomLoad'].includes(this.properties.pagination)
-        ) {
+        } else if (['loadMoreButton', 'bottomLoad'].includes(this.properties.pagination)) {
           await this.fetchData({
             records: [],
             isFetchCurrent: true,
@@ -513,29 +531,15 @@ Component({
     methodDeleteOne: async function (params) {
       try {
         if (!this.data.isModel) {
-          throw new WdCompError(
-            `${LISTVIEW_MESSAGE.methods_no_support}` || '',
-            {
-              code: `${
-                this.properties.refType === 'dataView'
-                  ? 'WdDataView'
-                  : 'WdListView'
-              }.ActionNotSupport`,
-            }
-          );
+          throw new WdCompError(`${LISTVIEW_MESSAGE.methods_no_support}` || '', {
+            code: `${this.properties.refType === 'dataView' ? 'WdDataView' : 'WdListView'}.ActionNotSupport`,
+          });
         }
         const _id = params?._id;
         if (!_id || typeof _id !== 'string') {
-          throw new WdCompError(
-            `${LISTVIEW_MESSAGE.deleteOne_param_error}` || '',
-            {
-              code: `${
-                this.properties.refType === 'dataView'
-                  ? 'WdDataView'
-                  : 'WdListView'
-              }.DeleteOneParamError`,
-            }
-          );
+          throw new WdCompError(`${LISTVIEW_MESSAGE.deleteOne_param_error}` || '', {
+            code: `${this.properties.refType === 'dataView' ? 'WdDataView' : 'WdListView'}.DeleteOneParamError`,
+          });
         }
         const { app } = getWedaAPI();
         await app?.cloud?.callDataSource(
@@ -544,7 +548,7 @@ Component({
             methodName: 'wedaDelete',
             params: { _id },
           },
-          true
+          true,
         );
         await this._methodRefreshKeepPage();
       } catch (e) {
@@ -572,7 +576,7 @@ Component({
     },
     updateWidgetAPI() {
       const { records, listTotal, pageNo, errorObj } = this.data;
-      let { pageSize } = this.properties;
+      let { pageSize, datasource } = this.properties;
       this.setReadonlyAttributes &&
         this.setReadonlyAttributes({
           records,
@@ -582,17 +586,21 @@ Component({
           refresh: this.methodRefresh.bind(this),
           deleteOne: this.methodDeleteOne.bind(this),
           error: errorObj,
+          dataSourceVersion: datasource?.extra?.methodName === 'wedaGetRecordsV2' ? 'v2' : 'v1',
         });
     },
   },
   observers: {
-    'datasource,bindConnectMetadata,connectorMethod,orderBy,orderType,pageSize,pagination,where,queryCondition,connectorParams,dataSourceType':
+    'datasource,bindConnectMetadata,connectorMethod,orderBy,orderType,selectFieldType,selectFields,pageIndex,pageSize,pagination,where,queryCondition,connectorParams,dataSourceType,sorter':
       function (...rest) {
         if (isEqual(this.data.paramRef, rest)) return;
         this.data.paramRef = rest;
         this._clearDelay();
         this.data.delayRef.current.initTimer = setTimeout(() => {
-          this.fetchData({ pageNo: 1, records: [] });
+          this.fetchData({
+            pageNo: this.properties.pageIndex || 1,
+            records: [],
+          });
         }, 500);
       },
     'dataSourceType,dataSourceData,total,enableTotal': function () {
@@ -602,19 +610,11 @@ Component({
       }
     },
     'isVisiableSign,status': function (dIsVisiableSign, dStatus) {
-      if (
-        dIsVisiableSign &&
-        ['', 'success'].includes(dStatus) &&
-        this.properties.pagination === 'bottomLoad'
-      ) {
+      if (dIsVisiableSign && ['', 'success'].includes(dStatus) && this.properties.pagination === 'bottomLoad') {
         this.handleNext();
       }
     },
-    'dataSourceType,isRecords,loadButtonText': function (
-      dataSourceType,
-      isRecords,
-      loadButtonText
-    ) {
+    'dataSourceType,isRecords,loadButtonText': function (dataSourceType, isRecords, loadButtonText) {
       const isModel = dataSourceType === 'data-model';
       const isDataViewApis = !isRecords && !isModel;
       const loadButtonTextFinal = textToString(loadButtonText) || '加载更多';
@@ -630,8 +630,8 @@ Component({
     },
     'dataSourceType,loading,_status': function (d, l, s) {
       let status = s;
-      if (d === 'expression') {
-        status = l ? 'loading' : '';
+      if (d === 'expression' && l) {
+        status = 'loading';
       }
       this.setData({ status });
     },

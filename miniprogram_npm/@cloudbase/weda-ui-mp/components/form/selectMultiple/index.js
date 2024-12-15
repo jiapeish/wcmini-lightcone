@@ -3,6 +3,8 @@ import { isNil } from '../../../utils/lodash';
 import { callDataSourceApi } from '../../../utils/tcb';
 import { arrayToMap } from '../../../utils/tool';
 import lodashGet from 'lodash.get';
+import deepEqual from '../../../utils/deepEqual';
+import { getWhereList } from '../../../utils/platform';
 
 // 判断值为空，展示placeholder
 export const isEmpty = (v) => {
@@ -95,6 +97,10 @@ Component({
       type: Boolean,
       value: true,
     },
+    where: {
+      type: Array,
+      value: [],
+    },
   },
   data: {
     cls: '',
@@ -109,6 +115,9 @@ Component({
     searchOption: [],
     width: '100%',
     isEmpty: true,
+    preWhere: [], // 对比 where 监听
+    whereEffected: [], // 每次请求都加上
+    fetchTimed: null, // 防抖
   },
   lifetimes: {
     attached() {
@@ -181,25 +190,20 @@ Component({
       });
     },
     dataSourceName: function () {
-      const { format, dataSourceName, primaryField } = this.properties;
-      if (
-        (format === 'one-many' || format === 'many-many') &&
-        dataSourceName &&
-        primaryField
-      ) {
-        this.setData({
-          records: [],
-          option: [],
-          pageNo: 1,
-        });
-        this._fetchData(1);
-      }
+      this._initFetchData();
     },
     displayLabel: function (displayLabel) {
       this.setData({ isEmpty: isEmpty(displayLabel) });
     },
     option: function (options) {
       this.triggerEvent('changeOptions', { value: { options } });
+    },
+    where: function (where) {
+      if (deepEqual(where, this.data.preWhere)) return;
+      const whereEffected = [].concat(getWhereList(where));
+      this.setData({ preWhere: where, whereEffected }, () => {
+        this._initFetchData();
+      });
     },
   },
   methods: {
@@ -243,28 +247,44 @@ Component({
     onChange(e) {
       this.triggerEvent('change', e.detail);
     },
+    // 初始化搜索数据，包括属性变化/搜索值变化
+    _initFetchData: function (_where = []) {
+      clearTimeout(this.data.fetchTimed);
+      // eslint-disable-next-line rulesdir/no-timer
+      this.data.fetchTimed = setTimeout(() => {
+        const { format, dataSourceName, primaryField } = this.properties;
+        if (
+          ['many-many', 'one-many'].concat(format) &&
+          dataSourceName &&
+          primaryField
+        ) {
+          this.setData({ records: [], option: [], pageNo: 1 });
+          this._fetchData(1, _where, true);
+        }
+      }, 300);
+    },
     // 获取数据列表：一对多，多对多
-    _fetchData: async function (pageNo) {
+    _fetchData: async function (_pageNo, _where = [], _init = false) {
       const { dataSourceName, primaryField } = this.properties;
       if (!dataSourceName) return;
 
-      const { records } = this.data;
-      let pageSize = 200;
-      let data = await callDataSourceApi({
+      const records = _init ? [] : this.data.records;
+      const pageSize = 200;
+      const res = await callDataSourceApi({
         dataSourceName: dataSourceName,
         methodName: 'wedaGetRecords',
         params: {
-          pageNo: pageNo,
-          pageSize: pageSize,
+          where: [{ $and: [...this.data.whereEffected, ..._where] }],
+          _pageNo,
+          pageSize,
         },
       });
-      const results = data?.records.map((item) => {
-        return {
-          ...item,
-          label: item[primaryField],
-          value: item._id,
-        };
-      });
+
+      const results = res?.records.map((item) => ({
+        ...item,
+        label: item[primaryField],
+        value: item._id,
+      }));
       if (this.data.records.length === 0 && results?.length === 0) {
         // 当异常的时候，主要为了不引起records的observer变化变化设置默认值
         this.setData({
@@ -300,8 +320,11 @@ Component({
       }
     },
     _childFetchData: function (e) {
-      const { pageNo } = e.detail;
-      this._fetchData(pageNo);
+      const { pageNo, searchValue } = e.detail;
+      const _where = searchValue
+        ? [{ [this.properties.primaryField]: { $search: searchValue } }]
+        : [];
+      this._fetchData(pageNo, _where);
     },
     getLabels: function (values, options) {
       let labels = values;
@@ -326,7 +349,18 @@ Component({
       return stringRange;
     },
     onSearch(event) {
-      this.triggerEvent('search', { value: event.detail.value });
+      const { noEvent, value: searchValue } = event.detail;
+
+      // 取消不触发搜索事件
+      if (!noEvent) {
+        this.triggerEvent('search', { value: searchValue });
+      }
+
+      // 接口搜索
+      const _where = searchValue
+        ? [{ [this.properties.primaryField]: { $search: searchValue } }]
+        : [];
+      this._initFetchData(_where);
     },
   },
 });

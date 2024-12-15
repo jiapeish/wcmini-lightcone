@@ -28,10 +28,6 @@ Component({
       type: String,
     },
   },
-  data: {
-    cls: '',
-    style: '',
-  },
   methods: {
     tap: function (e) {
       this.triggerEvent('contact', e.detail);

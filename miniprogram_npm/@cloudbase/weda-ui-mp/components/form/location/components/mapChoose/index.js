@@ -1,5 +1,7 @@
 import debounce from '../../../../../utils/debounce';
 import { getCurrentLocation } from '../../../../../utils/getCustomInfo';
+import { errorHandler } from '../../../../../utils/error';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 let QQMapWX = require('../../../../../utils/qqmap-wx-jssdk1.2/qqmap-wx-jssdk');
 let qqmapsdk;
@@ -9,6 +11,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    id: {
+      Type: String,
+      value: '',
+    },
     location: {
       type: Object,
       value: {
@@ -44,6 +50,7 @@ Component({
   lifetimes: {
     attached: function () {
       this.getInitialization();
+      this.setData({ id: this.id });
     },
   },
 
@@ -273,7 +280,12 @@ Component({
             });
           },
           fail: function (error) {
-            console.log('error search', error);
+            const { comErrorInfo } = errorHandler({
+              id: this.id,
+              code: 'WdLocation.SearchError',
+              error: error,
+            });
+            this.triggerEvent('error', { error: comErrorInfo });
             _this.setData({
               searchLoadingStatus: false,
             });
@@ -297,11 +309,12 @@ Component({
             }
           },
           fail: function (error) {
-            console.log(error);
-            wx.showToast({
-              icon: 'none',
-              title: error.message,
+            const { comErrorInfo } = errorHandler({
+              id: this.id,
+              code: 'WdLocation.GetSuggestionError',
+              error: error,
             });
+            this.triggerEvent('error', { error: comErrorInfo });
           },
         });
       }
@@ -332,7 +345,12 @@ Component({
           }
         },
         fail: (error) => {
-          console.log('reverseGeocoder error', error);
+          const { comErrorInfo } = errorHandler({
+            id: this.id,
+            code: 'WdLocation.ReverseGeocoderError',
+            error: error,
+          });
+          this.triggerEvent('error', { error: comErrorInfo });
           let item = {
             id: 'current-location',
             location: {
@@ -479,15 +497,19 @@ Component({
           latitude: Number(latitude.toFixed(6)),
           longitude: Number(longitude.toFixed(6)),
         };
-      } catch (e) {}
+      } catch (e) {
+        const { comErrorInfo } = errorHandler({
+          id: this.id,
+          code: 'WdLocation.GetLatestLocationError',
+          error: e,
+        });
+        this.triggerEvent('error', { error: comErrorInfo });
+      }
       return location;
     },
   },
   observers: {
-    apiKey: function () {
-      this.getInitialization();
-    },
-    location: function () {
+    'apiKey,location': function () {
       this.getInitialization();
     },
   },

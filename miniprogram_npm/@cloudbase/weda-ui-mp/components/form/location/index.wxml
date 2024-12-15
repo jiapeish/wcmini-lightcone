@@ -24,6 +24,6 @@
     <view style="padding-left: 16px; padding-right: 16px; margin-top: 16px; padding-bottom: 16px" wx:if="{{showMap&&isAddrShow}}">
       <map id="map" longitude="{{location.longitude}}" latitude="{{location.latitude}}" markers="{{markers}}" scale="16" enable-zoom="{{zoom}}" enable-scroll="{{drag}}" style="width: 100%; height: 200px"></map>
     </view>
-    <mapChoose isVisible="{{isMapChooseVisible}}" bindonClose="mapChooseOnClose" bindonConfirm="mapChooseOnConfirm" location="{{location}}" apiKey="{{isApikeyStatus.apiKey}}" circleRadius="{{locationRange}}" customRange="{{customRange}}" currentLocations="{{currentLocations}}" />
+    <mapChoose id="{{id}}" wx:if="{{isMapChooseVisible}}" isVisible="{{isMapChooseVisible}}" bindonClose="mapChooseOnClose" bindonConfirm="mapChooseOnConfirm" location="{{location}}" apiKey="{{isApikeyStatus.apiKey}}" circleRadius="{{locationRange}}" customRange="{{customRange}}" currentLocations="{{currentLocations}}" bind:error="handleError" />
   </view>
 </formcell>

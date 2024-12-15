@@ -21,6 +21,7 @@
   border: none;
   border-radius: var(--wd-progress-radius);
   color: var(--wd-progress-text-color);
+  flex-grow: 1;
 }
 .wd-progress__value {
   background: var(--wd-progress-color-default);
@@ -33,6 +34,8 @@
 }
 
 .wd-progress-container {
+  display: flex;
+  align-items: center;
   flex-grow: 1;
 }
 
@@ -157,6 +160,8 @@
   display: flex;
 }
 .wd-form-item-wrap__label {
+  display: flex;
+  align-items: center;
   word-break: break-all;
   width: var(--wd-form-item-label-width);
   margin-right: var(--wd-form-item-label-mr);
@@ -168,6 +173,9 @@
 }
 .wd-form-item-wrap__label.is-disabled {
   color: var(--wd-form-item-label-color-disabled);
+}
+.wd-form-item-wrap__label-content {
+  flex: 1;
 }
 .wd-form-item-wrap__label > label {
   display: inline-block;
@@ -405,6 +413,8 @@
   color: var(--wd-form-readonly-font-color);
   width: 100%;
   word-break: break-word;
+  display: flex;
+  align-items: center;
 }
 .wd-form-item__readonly-web.size-font-sm {
   font: var(--wd-typography-body-sm);

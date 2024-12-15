@@ -1,6 +1,8 @@
 import { callDataSource } from '../../../utils/tcb';
 import classNames from '../../../utils/classnames';
 import customInfo from '../../../utils/getCustomInfo';
+import { errorHandler } from '../../../utils/error';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 let QQMapWX = require('../../../utils/qqmap-wx-jssdk1.2/qqmap-wx-jssdk');
 let qqmapsdk;
@@ -15,6 +17,10 @@ Component({
   properties: {
     className: {
       type: String,
+      value: '',
+    },
+    id: {
+      Type: String,
       value: '',
     },
     style: {
@@ -97,6 +103,7 @@ Component({
 
   lifetimes: {
     attached: function () {
+      this.setData({ id: this.id });
       const { locationType, dataSource } = this.properties;
       const getReverseGeocoder = async (location) => {
         const { isApikeyStatus } = this.data;
@@ -182,7 +189,12 @@ Component({
           }
           getReverseGeocoder(location);
         } catch (err) {
-          console.log('drowMapMarks err', err);
+          const { comErrorInfo } = errorHandler({
+            id: this.id,
+            code: 'WdLocation.DrowMapMarksError',
+            error: err,
+          });
+          this.triggerEvent('error', { error: comErrorInfo });
         }
       };
       const getCustomInfoLocation = () => {
@@ -206,6 +218,12 @@ Component({
                 },
                 currentLocations: {},
               });
+              const { comErrorInfo } = errorHandler({
+                id: this.id,
+                code: 'WdLocation.GetCurrentLocationError',
+                error,
+              });
+              this.triggerEvent('error', { error: comErrorInfo });
             });
         } else {
           drowMapMarks(customInfoLocation);
@@ -225,7 +243,6 @@ Component({
                   getCustomInfoLocation();
                 },
                 fail: (err) => {
-                  console.log('authorize fail', err);
                   this.setData({
                     currentPosition: {
                       status: false,
@@ -236,10 +253,12 @@ Component({
                   this.triggerEvent('change', {
                     value: {},
                   });
-                  wx.showToast({
-                    icon: 'none',
-                    title: err.errMsg,
+                  const { comErrorInfo } = errorHandler({
+                    id: this.id,
+                    code: 'WdLocation.AuthorizeFail',
+                    error: err,
                   });
+                  this.triggerEvent('error', { error: comErrorInfo });
                 },
               });
             } else {
@@ -248,11 +267,12 @@ Component({
             }
           },
           fail: (err) => {
-            console.log('getSetting fail', err);
-            wx.showToast({
-              icon: 'none',
-              title: 'getSetting fail',
+            const { comErrorInfo } = errorHandler({
+              id: this.id,
+              code: 'WdLocation.GetSettingFail',
+              error: err,
             });
+            this.triggerEvent('error', { error: comErrorInfo });
           },
         });
       }
@@ -336,7 +356,6 @@ Component({
           });
         }
       } catch (error) {
-        console.log('getApikey error', error);
         this.setData({
           isApikeyStatus: {
             status: false,
@@ -344,6 +363,12 @@ Component({
             apiKey: '',
           },
         });
+        const { comErrorInfo } = errorHandler({
+          id: this.id,
+          code: 'WdLocation.GetApikeyError',
+          error,
+        });
+        this.triggerEvent('error', { error: comErrorInfo });
       }
     },
     chooseLocation() {
@@ -424,15 +449,16 @@ Component({
       });
     },
     mapChooseOnConfirm(event) {
+      this.setData({ isMapChooseVisible: false });
       const value = event.detail;
       this.changeLocation({
         ...value,
         poiname: value.address,
         detailedAddress: value.detailedAddress,
       });
-      this.setData({
-        isMapChooseVisible: false,
-      });
+    },
+    handleError: function (e) {
+      this.triggerEvent('error', e.detail);
     },
   },
   observers: {

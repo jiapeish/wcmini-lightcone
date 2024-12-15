@@ -33,6 +33,10 @@ Component({
       type: Boolean,
       value: true,
     },
+    selectedMenuKey: {
+      type: String,
+      value: '',
+    },
   },
   data: {
     classPrefix: WD_PREFIX,

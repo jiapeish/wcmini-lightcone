@@ -1,5 +1,5 @@
 import { REL_DICT } from './constant';
-
+import { errorHandler } from './error';
 /**
  * 文件字节转换
  */
@@ -88,6 +88,10 @@ export const getWhereList = (where) => {
     }
     return [];
   } catch (error) {
+    errorHandler({
+      code: 'GetWhereListError',
+      error,
+    });
     return [];
   }
 };

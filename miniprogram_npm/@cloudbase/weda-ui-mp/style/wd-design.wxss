@@ -5,7 +5,8 @@
 }
 
 :root,
-page {
+page,
+:host {
   --wd-font-size-1: 0.625rem;
   --wd-font-size-2: 0.75rem;
   --wd-font-size-3: 0.875rem;
@@ -132,6 +133,7 @@ page {
   /* 下拉菜单 / 气泡确认框 / 选择器*/
   --wd-shadow-lg: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
   /* 弹窗的投影 */
+  --exeditor-tables-contextmenu-z: 1002;
 }
 
 .wd-h5-root {
@@ -253,6 +255,7 @@ page {
 
 :root,
 page,
+:host,
 :root[theme-mode=light],
 page[theme-mode=light],
 .wd-theme-light {
@@ -350,7 +353,7 @@ page[theme-mode=light],
   --wd-color-success-focus: var(--wd-color-success-2);
   --wd-color-success-active: var(--wd-color-success-6);
   --wd-color-success-disabled: var(--wd-color-success-3);
-  --wd-bg-mask: rgba(var(--wd-black-rgb), 80%);
+  --wd-bg-mask: rgba(var(--wd-black-rgb), 50%);
   --wd-bg-mask-inverse: rgba(var(--wd-white-rgb), 60%);
   --wd-color-bg-page: var(--wd-color-gray-1);
   --wd-color-bg-container: var(--wd-white);

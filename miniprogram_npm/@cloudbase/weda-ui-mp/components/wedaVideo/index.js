@@ -2,7 +2,7 @@ import { getTempFileURL } from '../../utils/tcb';
 import handleEvents from '../../utils/handleEvents';
 import { commonCompBehavior } from '../../utils/common-behavior';
 import { getWedaAPI } from '../../utils/getWedaApi';
-
+import { errorHandler } from '../../utils/error';
 // component/videojs.js
 Component({
   /**
@@ -160,7 +160,11 @@ Component({
           .then((res) => {
             this.setData({ realSrc: res || '' });
           })
-          .catch(() => {
+          .catch((e) => {
+            errorHandler({
+              code: 'WedaVideo.GetVideoDataSourceError',
+              error: e,
+            });
             this.setData({
               realSrc: videoDataSource,
             });

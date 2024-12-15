@@ -709,12 +709,16 @@ export const WD_INPUT_RULES = [
     value: 'cn',
   },
   {
-    label: '手机号',
+    label: '大陆手机号',
     value: 'mobile',
   },
   {
     label: '固定电话',
     value: 'tel',
+  },
+  {
+    label: '通用电话（国内及境外手机号、电话）',
+    value: 'internationalTel',
   },
   {
     label: '网址',
@@ -978,6 +982,8 @@ export const WD_SELECT_FORMAT = [
   { label: 'related', value: 'related' },
   { label: 'x-enum', value: 'x-enum' },
   { label: 'many-one', value: 'many-one' },
+  { label: 'one-one', value: 'one-one' },
+  { label: 'one-one-r', value: 'one-one-r' },
 ];
 
 // 地区选择
@@ -1252,6 +1258,8 @@ export const WD_CODE_EDITOR_LANGUAGE = [
   { label: 'MongoDB', value: 'mongodb' },
   { label: 'SQL', value: 'sql' },
   { label: 'MySQL', value: 'mysql' },
+  { label: 'JSON', value: 'json' },
+  { label: 'Markdown', value: 'markdown' },
 ];
 
 export const WD_CODE_EDITOR_THEME = [

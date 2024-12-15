@@ -42,6 +42,10 @@ Component({
       type: Boolean,
       value: true,
     },
+    selectedMenuKey: {
+      type: String,
+      value: '',
+    },
   },
   data: {
     classPrefix: WD_PREFIX,
@@ -52,6 +56,8 @@ Component({
     attached() {
       this.updateWidgetAPI();
       this.init();
+      this.properties.selectedMenuKey &&
+        this.setData({ selectedKey: this.properties.selectedMenuKey });
     },
   },
   observers: {
@@ -61,6 +67,9 @@ Component({
       );
       this.findSelectItem(menuData);
       this.init(menu, defaultOpened);
+    },
+    selectedMenuKey: function (selectedMenuKey) {
+      selectedMenuKey && this.setData({ selectedKey: selectedMenuKey });
     },
   },
   methods: {
@@ -74,7 +83,7 @@ Component({
      * 设置选中菜单项
      * @param {*} params
      */
-    setSelectedInfo(params, isNavigate = false) {
+    setSelectedInfo({ params, isNavigate = false } = {}) {
       const { key, item } = params || {};
       let selectItem = item;
       if (key || !item) {
@@ -84,6 +93,7 @@ Component({
             : this.data.menuData) || [];
         selectItem = this.findSelectItem(menuData, key) || {};
       }
+      if (!selectItem) return;
       this.setData({ selectedKey: selectItem?.key });
       isNavigate && this.navigateTo(selectItem);
     },
@@ -123,7 +133,7 @@ Component({
         (menu.isMultiTerminal ? menu.mobileMenuData : menu.menuData) || []
       );
       const selectItem = this.findSelectItem(menuData) || {};
-      this.setSelectedInfo({ item: selectItem });
+      this.setSelectedInfo({ params: { item: selectItem } });
       this.setData({
         menuData: this.generateMenuData({
           menuData,

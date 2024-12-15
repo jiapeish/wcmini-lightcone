@@ -54,4 +54,5 @@
   template="{{template}}"
   cursorSpacing="{{cursorSpacing}}"
   isConvert="{{isConvert}}"
+  bind:inputAdornmentClick="handleEvent"
 ></inner-input>

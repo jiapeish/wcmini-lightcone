@@ -10,3 +10,17 @@ export class WdCompError extends Error {
     this.original = context ? context.original : {};
   }
 }
+
+export const errorHandler = ({ id = '', code, error, message = '' }) => {
+  const comErrorInfo = {
+    code,
+    requestId: error?.requestId,
+    original: error,
+    message:
+      message ||
+      `[组件${id}:${code}]${error?.message || error?.errMsg || code}`,
+  };
+  const compError = new WdCompError(comErrorInfo.message, comErrorInfo);
+  console.error(`${comErrorInfo.code}:`, comErrorInfo);
+  return { compError, comErrorInfo };
+};

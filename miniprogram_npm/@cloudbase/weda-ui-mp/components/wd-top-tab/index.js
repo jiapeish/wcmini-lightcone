@@ -24,6 +24,10 @@ Component({
       type: Boolean,
       value: false,
     },
+    isSlotAuto: {
+      type: Boolean,
+      value: false,
+    },
     selectedValue: {
       type: String,
       value: '1',
@@ -38,6 +42,7 @@ Component({
     classPrefix: WD_PREFIX,
     currentIndex: 0,
     tabsData: [],
+    slotKey: '1',
   },
   lifetimes: {
     attached() {
@@ -49,6 +54,10 @@ Component({
     getCurrent: function (e) {
       this.setData({
         currentIndex: e.detail,
+      });
+      const idx = e.detail;
+      this.triggerEvent('change', {
+        value: this.data.tabsData?.[idx]?.value,
       });
     },
     choooseTab: function (params) {
@@ -91,7 +100,7 @@ Component({
     ]),
   },
   observers: {
-    selectedValue: function (selectedValue) {
+    'selectedValue, list': function (selectedValue) {
       this.setCurrentIndex(selectedValue);
     },
     'currentIndex, list': function (currentIndex, list) {
@@ -103,14 +112,10 @@ Component({
       });
       this.setData({
         tabsData: tabData,
+        slotKey: this.properties.list[currentIndex]?.slotKey || '1',
       });
 
       this.updateWidgetAPI();
-    },
-    currentIndex: function (currentIndex) {
-      this.triggerEvent('change', {
-        value: this.properties.list[currentIndex]?.value,
-      });
     },
   },
 });

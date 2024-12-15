@@ -22,7 +22,6 @@
     <wd-input-group before="{{before}}" after="{{after}}" block="{{true}}" size="{{_size}}" classRoot="{{classRoot}}" readOnly="{{readOnly}}">
       <wd-input-wrap block="{{block}}" classRoot="{{classRoot}}" before="{{before}}" after="{{after}}" disabled="{{disabled}}" prefixType="{{prefixType}}" prefixIcon="{{prefixIcon}}" prefixSrc="{{prefixSrc}}" suffixType="{{_suffixType}}" suffixIcon="{{_suffixIcon}}" suffixSrc="{{suffixSrc}}" hasClearIcon="{{hasClearIcon}}" bind:onClear="handleClear" readOnly="{{readOnly}}">
         <old-select
-          name="{{name}}"
           labelVisible="{{false}}"
           label=""
           readOnly="{{readOnly}}"
@@ -36,6 +35,7 @@
           size="full"
           tipBlock="{{tipBlock}}"
           viewId="{{viewId}}"
+          where="{{where}}"
           dataSourceName="{{dataSourceName}}"
           mode="selector"
           version="wd"

@@ -184,7 +184,7 @@ Component({
     stepMinus(e) {
       this.onRealChange(e, 'minus');
     },
-    onRealChange(e, type = '') {
+    onRealChange(e, type = '', { needSetData = true, value = '' } = {}) {
       const { readOnly, disabled, status, format, step } = this.properties;
       if (readOnly || disabled || (status && status !== 'edit'))
         return this.data.realValue;
@@ -200,31 +200,39 @@ Component({
           (type === 'plus' && stepPlusDisabled) ||
           (type === 'minus' && stepMinusDisabled)
         ) {
-          this.setData({
-            stepPlusDisabled,
-            stepMinusDisabled,
-          });
-          return Number(this.data.showValue);
+          needSetData &&
+            this.setData({
+              stepPlusDisabled,
+              stepMinusDisabled,
+            });
+          return Number(value || this.data.showValue);
         }
       }
 
       const toShow = this.getShowValue({
         ...this.properties,
-        value: this.data.showValue,
+        value: value || this.data.showValue,
         type,
+        needSetData,
       });
       const toReal = getRealValue({ value: toShow, format });
       const detail = { ...e.detail, value: toReal };
-      this.changeForm(detail);
-      this.triggerEvent('change', detail);
+
+      if (needSetData) {
+        this.changeForm(detail);
+        this.triggerEvent('change', detail);
+      } else {
+        this.triggerEvent('input', detail);
+      }
 
       const upDownState = this.getStepDisabled(null, toReal);
 
-      this.setData({
-        realValue: toReal,
-        showValue: toShow,
-        ...upDownState,
-      });
+      needSetData &&
+        this.setData({
+          realValue: toReal,
+          showValue: toShow,
+          ...upDownState,
+        });
 
       return toReal;
     },
@@ -251,6 +259,7 @@ Component({
 
       if (value === 'Infinity' || value === '-Infinity') {
         this.setData({ showValue: value });
+        this.triggerEvent('input', { ...e.detail, value });
         return;
       }
 
@@ -265,6 +274,8 @@ Component({
       }
 
       this.setData({ showValue: value });
+
+      this.onRealChange(e, '', { needSetData: false, value });
     },
     handleClear: function (e) {
       const detail = { ...e.detail, value: null };
@@ -340,6 +351,7 @@ Component({
       min,
       format,
       type = '',
+      needSetData = true,
     }) {
       if (value === '' && !['plus', 'minus'].includes(type)) return '';
 
@@ -399,11 +411,12 @@ Component({
         }`;
       }
 
-      this.setData({
-        validateState: validState,
-        validateErrorMsg: validMsg,
-        selfDefineRules: rules,
-      });
+      needSetData &&
+        this.setData({
+          validateState: validState,
+          validateErrorMsg: validMsg,
+          selfDefineRules: rules,
+        });
 
       return res;
     },

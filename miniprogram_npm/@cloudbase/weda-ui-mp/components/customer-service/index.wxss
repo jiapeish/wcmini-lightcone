@@ -5,3 +5,7 @@
   border: none;
   background: none !important;
 }
+
+.wd-customer-service-container {
+  background: transparent;
+}

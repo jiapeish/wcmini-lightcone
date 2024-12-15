@@ -743,3 +743,7 @@
   color: #c1c1c1;
   cursor: not-allowed;
 }
+
+.wd-mp-form-item .wd-form-select_input {
+  cursor: unset;
+}

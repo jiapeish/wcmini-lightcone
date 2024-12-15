@@ -24,6 +24,7 @@
     <wd-input-group before="{{before}}" after="{{after}}" block="{{true}}" size="{{_size}}" classRoot="{{classRoot}}">
       <wd-input-wrap block="{{block}}" classRoot="{{classRoot}}" before="{{before}}" after="{{after}}" disabled="{{disabled}}" prefixType="{{prefixType}}" prefixIcon="{{prefixIcon}}" prefixSrc="{{prefixSrc}}" suffixType="{{suffixType}}" suffixIcon="{{suffixIcon}}" suffixSrc="{{suffixSrc}}" hasClearIcon="{{hasClearIcon}}" bind:onClear="handleClear">
         <old-location
+          id="{{id}}"
           name="{{name}}"
           labelVisible="{{false}}"
           value="{{value}}"
@@ -40,6 +41,7 @@
           readOnly="{{readOnly}}"
           disabled="{{disabled || readOnly}}"
           bind:change="handleChange"
+          bind:error="handleError"
         />
       </wd-input-wrap>
     </wd-input-group>

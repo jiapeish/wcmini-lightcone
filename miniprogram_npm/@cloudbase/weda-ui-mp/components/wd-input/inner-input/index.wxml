@@ -24,11 +24,11 @@
     after="{{after}}"
     readBeforeAfter="{{!isUnionValue}}"
   >
-    <wd-input-group before="{{before}}" after="{{after}}" block="{{true}}" size="{{_size}}" classRoot="{{classRoot}}">
+    <wd-input-group before="{{before}}" after="{{after}}" block="{{true}}" size="{{_size}}" classRoot="{{classRoot}}" bind:inputAdornmentClick="handleEvent">
       <view class="{{cls}} {{template === 'greySearchBox'?'wd-input-input-search template search-box color-grey is-pc-bordered is-h5-borderless':''}} {{template === 'whiteSearchBox'?'wd-input-input-search template search-box color-white is-pc-bordered is-h5-borderless':''}}">
         <!-- 前缀图标 -->
         <block wx:if="{{prefixType}}">
-          <view class="{{inputWrap}}__before">
+          <view class="{{inputWrap}}__before" data-type="prefix" bind:tap="inputAdornmentClick">
             <wd-icon name="{{prefixIcon}}" type="{{prefixType}}" src="{{prefixSrc}}" size="{{iconSize}}" className="{{root}}__icon-before"></wd-icon>
           </view>
         </block>
@@ -64,7 +64,7 @@
 
         <!-- 后缀图标 -->
         <block wx:if="{{!hasClearIcon && suffixType}}">
-          <view class="{{inputWrap}}__after">
+          <view class="{{inputWrap}}__after" data-type="suffix" bind:tap="inputAdornmentClick">
             <wd-icon name="{{suffixIcon}}" type="{{suffixType}}" src="{{suffixSrc}}" size="{{iconSize}}" className="{{root}}__icon-after"></wd-icon>
           </view>
         </block>

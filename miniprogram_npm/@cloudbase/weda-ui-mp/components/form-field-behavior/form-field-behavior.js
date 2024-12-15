@@ -1,5 +1,7 @@
 import { validType } from './validator';
 import equal from '../../utils/deepEqual';
+import { errorHandler } from '../../utils/error';
+
 import { autorun, untracked } from 'mobx';
 import {
   convertStatus,
@@ -39,6 +41,10 @@ export default Behavior({
     labelVisible: {
       type: Boolean,
       value: true,
+    },
+    label: {
+      type: String,
+      value: '标题',
     },
     requiredMsg: {
       type: String,
@@ -93,7 +99,7 @@ export default Behavior({
         setHidden() {
           that.setVisible(false);
         },
-        async handleValidate() {
+        async handleValidate(throwError = true) {
           let finalValue = that.data.value;
           const {
             required,
@@ -101,6 +107,7 @@ export default Behavior({
             requiredMsg,
             privateRules,
             selfDefineRules,
+            label,
           } = that.data;
           const _rules = [].concat(rules, privateRules, selfDefineRules);
           if (!required && !_rules.length) return;
@@ -129,7 +136,8 @@ export default Behavior({
               const isPass = _rules.some((item) => {
                 if (!item.format && !item.pattern && !item.func) {
                   // console.log(item)
-                  throw new Error('验证规则必须配置 format/pattern');
+                  // throw new Error('验证规则必须配置 format/pattern');
+                  return true;
                 }
                 if (item.format) {
                   const typeFunc = validType[item.format];
@@ -188,6 +196,14 @@ export default Behavior({
               validateState: 'error',
               validateErrorMsg: errorArr[0].message,
             });
+            if (throwError) {
+              const { compError } = errorHandler({
+                code: 'VALIDATE_ERROR',
+                error: errorArr,
+                message: `【${label}】${errorArr[0]?.message}`,
+              });
+              throw compError;
+            }
           } else {
             // console.log("校验成功>>>>>>>")
             that.setData({

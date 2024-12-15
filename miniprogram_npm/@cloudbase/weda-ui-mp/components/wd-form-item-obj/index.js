@@ -12,6 +12,12 @@ import {
 Component({
   options: { virtualHost: true, styleIsolation: 'shared' },
   behaviors: [itemBehavior],
+  properties: {
+    mode: {
+      type: String,
+      value: 'obj',
+    },
+  },
   data: {
     item: `${WD_PREFIX}-form-item`,
     itemWrap: `${WD_PREFIX}-form-item-wrap`,

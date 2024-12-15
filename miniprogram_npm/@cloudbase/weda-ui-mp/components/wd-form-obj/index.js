@@ -26,6 +26,10 @@ Component({
       type: String,
       value: 'form-obj',
     },
+    mode: {
+      type: String,
+      value: 'obj',
+    },
   },
   data: {
     status: 'edit',
@@ -218,7 +222,8 @@ Component({
       // 不存在父级嵌套表单时，去更新父级普通表单，避免重复更新
       if (!parentFormObj && isUpdateParentForm) {
         // 触发父级普通表单值更新
-        parentForm?.setValue?.({ [name]: value }, false, true);
+        // 子组件向上同步值，不调用setValue
+        // parentForm?.setValue?.({ [name]: value }, false, true);
         // 刷新父级普通表单的formData
         parentForm?.updateFormContext();
       }
@@ -270,7 +275,8 @@ Component({
 
       if (!parentFormObj && parentForm) {
         // 触发父级普通表单值更新
-        parentForm?.setValue?.({ [name]: value }, false, true);
+        // 子组件向上同步值，不调用setValue
+        // parentForm?.setValue?.({ [name]: value }, false, true);
         // 刷新父级普通表单的formData
         parentForm?.updateFormContext();
       }
@@ -294,12 +300,13 @@ Component({
       this.setData({ objValue: value });
       this.updateWidgetAPI();
     },
-    objValue: function (objValue) {
+    objValue: function () {
       // 如果是最顶层的嵌套表单，则去更新子组件的值，否则自己的值更新不去触发子组件值更新，因为父级普通表单会去更新
-      const parentFormObj = this.getParentFormObj();
-      if (!parentFormObj) {
-        this.updateChildValue(objValue);
-      }
+      // 更新子组件的值需要主动去调用，不被动执行
+      // const parentFormObj = this.getParentFormObj();
+      // if (!parentFormObj) {
+      //   this.updateChildValue(objValue);
+      // }
     },
   },
 });

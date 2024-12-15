@@ -44,6 +44,7 @@
   bind:clear="handleEvent"
   bind:confirm="handleEvent"
   bind:changeForm="changeForm"
+  bind:inputAdornmentClick="handleEvent"
   classRoot="{{classRoot}}"
   visible="{{visible}}"
   validateState="{{validateState}}"

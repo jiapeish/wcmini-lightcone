@@ -4,7 +4,7 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1734225378513, function(require, module, exports) {
+__DEFINE__(1734234913863, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAuth = exports.Auth = exports.initializeApp = exports.ErrorType = exports.Client = exports.initializeClient = void 0;
@@ -29,8 +29,8 @@ var auth_2 = require("./auth");
 Object.defineProperty(exports, "Auth", { enumerable: true, get: function () { return auth_2.Auth; } });
 Object.defineProperty(exports, "getAuth", { enumerable: true, get: function () { return auth_2.getAuth; } });
 
-}, function(modId) {var map = {"./auth":1734225378514,"./app":1734225378525,"./app/request":1734225378526}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378514, function(require, module, exports) {
+}, function(modId) {var map = {"./auth":1734234913864,"./app":1734234913875,"./app/request":1734234913876}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913864, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Auth = exports.getAuth = exports.DeviceAuthorizeState = exports.VerificationUsages = exports.ErrorType = void 0;
@@ -666,8 +666,8 @@ class Auth {
 }
 exports.Auth = Auth;
 
-}, function(modId) { var map = {"./consts":1734225378515,"../oauthclient":1734225378516,"../captcha":1734225378523,"../app/internal":1734225378517}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378515, function(require, module, exports) {
+}, function(modId) { var map = {"./consts":1734234913865,"../oauthclient":1734234913866,"../captcha":1734234913873,"../app/internal":1734234913867}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913865, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceAuthorizeState = exports.ErrorType = exports.VerificationUsages = exports.ApiUrls = void 0;
@@ -757,7 +757,7 @@ var DeviceAuthorizeState;
 })(DeviceAuthorizeState = exports.DeviceAuthorizeState || (exports.DeviceAuthorizeState = {}));
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378516, function(require, module, exports) {
+__DEFINE__(1734234913866, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOAuthClient = exports.ErrorType = void 0;
@@ -779,8 +779,8 @@ function getOAuthClient(app, opts) {
 }
 exports.getOAuthClient = getOAuthClient;
 
-}, function(modId) { var map = {"../app/internal":1734225378517,"./oauthclient":1734225378518,"./consts":1734225378519}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378517, function(require, module, exports) {
+}, function(modId) { var map = {"../app/internal":1734234913867,"./oauthclient":1734234913868,"./consts":1734234913869}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913867, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._getComponent = void 0;
@@ -807,7 +807,7 @@ function _getComponent(app, name, creator) {
 exports._getComponent = _getComponent;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378518, function(require, module, exports) {
+__DEFINE__(1734234913868, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OAuth2Client = exports.LocalCredentials = exports.generateRequestId = exports.toResponseError = void 0;
@@ -1223,8 +1223,8 @@ OAuth2Client._maxRetry = 5;
 OAuth2Client._retryInterval = 1000;
 exports.OAuth2Client = OAuth2Client;
 
-}, function(modId) { var map = {"./consts":1734225378519,"../utils/uuid":1734225378520,"../utils/base64":1734225378521,"../utils/promise":1734225378522}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378519, function(require, module, exports) {
+}, function(modId) { var map = {"./consts":1734234913869,"../utils/uuid":1734234913870,"../utils/base64":1734234913871,"../utils/promise":1734234913872}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913869, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ErrorType = exports.Syntax = void 0;
@@ -1279,7 +1279,7 @@ var ErrorType;
 })(ErrorType = exports.ErrorType || (exports.ErrorType = {}));
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378520, function(require, module, exports) {
+__DEFINE__(1734234913870, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uuidv4 = void 0;
@@ -1297,7 +1297,7 @@ function uuidv4() {
 exports.uuidv4 = uuidv4;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378521, function(require, module, exports) {
+__DEFINE__(1734234913871, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.weappJwtDecode = exports.base64_url_decode = exports.weAtob = exports.weBtoa = void 0;
@@ -1393,7 +1393,7 @@ function weappJwtDecode(token, options) {
 exports.weappJwtDecode = weappJwtDecode;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378522, function(require, module, exports) {
+__DEFINE__(1734234913872, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseOnce = void 0;
@@ -1443,7 +1443,7 @@ class PromiseOnce {
 exports.PromiseOnce = PromiseOnce;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378523, function(require, module, exports) {
+__DEFINE__(1734234913873, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Captcha = exports.getCaptcha = void 0;
@@ -1599,8 +1599,8 @@ class Captcha {
 }
 exports.Captcha = Captcha;
 
-}, function(modId) { var map = {"../auth/consts":1734225378515,"../app/internal":1734225378517,"../utils/mp":1734225378524}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378524, function(require, module, exports) {
+}, function(modId) { var map = {"../auth/consts":1734234913865,"../app/internal":1734234913867,"../utils/mp":1734234913874}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913874, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isInMpWebView = exports.isMp = void 0;
@@ -1667,7 +1667,7 @@ function isInMpWebView() {
 exports.isInMpWebView = isInMpWebView;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378525, function(require, module, exports) {
+__DEFINE__(1734234913875, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppImpl = exports.initializeApp = void 0;
@@ -1726,8 +1726,8 @@ class AppImpl {
 }
 exports.AppImpl = AppImpl;
 
-}, function(modId) { var map = {"./request":1734225378526,"./openuri":1734225378527,"./storage":1734225378528}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378526, function(require, module, exports) {
+}, function(modId) { var map = {"./request":1734234913876,"./openuri":1734234913877,"./storage":1734234913878}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913876, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultRequest = exports.ErrorType = void 0;
@@ -1787,7 +1787,7 @@ const defaultRequest = async (url, options) => {
 exports.defaultRequest = defaultRequest;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378527, function(require, module, exports) {
+__DEFINE__(1734234913877, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultOpenURIWithCallback = void 0;
@@ -1902,8 +1902,8 @@ exports.defaultOpenURIWithCallback = defaultOpenURIWithCallback;
 class Callback {
 }
 
-}, function(modId) { var map = {"../auth/consts":1734225378515}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1734225378528, function(require, module, exports) {
+}, function(modId) { var map = {"../auth/consts":1734234913865}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1734234913878, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefaultStorage = void 0;
@@ -1940,7 +1940,7 @@ class DefaultStorage {
 exports.DefaultStorage = DefaultStorage;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1734225378513);
+return __REQUIRE__(1734234913863);
 })()
 //miniprogram-npm-outsideDeps=[]
 //# sourceMappingURL=index.js.map

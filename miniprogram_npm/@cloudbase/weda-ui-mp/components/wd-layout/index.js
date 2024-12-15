@@ -25,6 +25,14 @@ Component({
       type: String,
       value: 'white',
     },
+    enableHeaderSlot: {
+      type: Boolean,
+      value: true,
+    },
+    enableContentSlot: {
+      type: Boolean,
+      value: true,
+    },
   },
   data: { classPrefix: WD_PREFIX },
   lifetimes: {},

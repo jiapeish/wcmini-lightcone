@@ -1,6 +1,6 @@
 import { getWedaAPI } from './getWedaApi';
 import { deepClone } from './lodash';
-
+import { errorHandler } from './error';
 // 默认使用swr的methodName
 const SWR_METHOD_DEFAULT = ['wedaGetItem', 'wedaGetRecords', 'getApiKey'];
 // 默认使用swr的action
@@ -51,7 +51,12 @@ export async function getTempFileURL(data) {
     if (/^cloud:\/\//.test(data)) {
       return await getWedaAPI()?.app.cloud.getTempFileURL?.(data);
     }
-  } catch (e) {}
+  } catch (e) {
+    errorHandler({
+      code: 'GetTempFileURLError',
+      error: e,
+    });
+  }
   return data;
 }
 
@@ -76,7 +81,10 @@ export async function getAppCustomNav() {
     });
     return res;
   } catch (error) {
-    console.error('错误', error);
+    errorHandler({
+      code: 'GetAppCustomNavError',
+      error,
+    });
     return {};
   }
 }
@@ -129,7 +137,10 @@ export async function callDataSourceApi(param) {
   try {
     return await callDataSource(param);
   } catch (error) {
-    console.error('错误', error);
+    errorHandler({
+      code: 'CallDataSourceError',
+      error,
+    });
     return {};
   }
 }
@@ -143,6 +154,10 @@ export const resolveStaticResourceUrl = (path) => {
       getWedaAPI()?.app?.__internal__?.resolveStaticResourceUrl(path);
     return resourceUrl;
   } catch (error) {
+    errorHandler({
+      code: 'ResolveStaticResourceUrlError',
+      error,
+    });
     return '';
   }
 };

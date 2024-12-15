@@ -46,7 +46,7 @@ class EchartLine extends EchartBase {
       const arrXisCountEmptyIndex = []; // 记录空值的key
       this.config.series = [];
 
-      if (Object.keys(groupKey ?? {}).length === 0) {
+      if (!groupKey?.name) {
         if (sortedXAxisData.length > 0) {
           const numLine = arrSourData[0].YLabels.length;
           if (numLine > 0) {
@@ -83,7 +83,7 @@ class EchartLine extends EchartBase {
         }
         // 处理显示空值问题
         this.setEmptyValue(xIsCountEmpty);
-      } else if (groupKey) {
+      } else if (groupKey?.name) {
         // 如果是分组，则这里需要特殊处理
         // 按groupKey分组存放数据值
         const objGroupKey = {}; // {'分组字段':[{value:'统计的值', dimensionality:'维度名', name:'统计的数值字段名'}]}

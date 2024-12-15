@@ -22,6 +22,14 @@ Component({
       type: Object,
       value: null,
     },
+    uploadTipText: {
+      type: String,
+      value: '支持批量上传',
+    },
+    uploadButtonText: {
+      type: String,
+      value: '点击上传',
+    },
   },
   methods: {
     initValue: function () {

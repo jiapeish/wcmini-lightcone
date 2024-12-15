@@ -1,3 +1,4 @@
+import { errorHandler } from './error';
 /**
  * 十六进制、rgba、rgb、hsl、hsla 都换算成 rgba
  */
@@ -47,6 +48,10 @@ export function colorToRgba(color, alpha = 1) {
     a = a * alpha;
     return `rgba(${r},${g},${b},${a})`;
   } catch (e) {
+    errorHandler({
+      code: 'ColorToRgbaError',
+      error: e,
+    });
     return color;
   }
 }

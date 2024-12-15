@@ -28,6 +28,9 @@ Component({
       type: Boolean,
       value: true,
     },
+    inputPattern: {
+      type: null,
+    },
   },
   data: {
     root: '',
@@ -76,9 +79,14 @@ Component({
       this.setData({ isFocus: false });
     },
     handleChange: function (e) {
-      const currentInputValue = e.detail.value;
+      const text = e.detail.value;
+      const reg = new RegExp(this.properties.inputPattern);
+      if (this.properties.inputPattern && !reg.test(text)) {
+        this.setData({ currentInputValue: this.data.currentInputValue });
+        return;
+      }
       const detail = this.convertDetail(e);
-      this.setData({ currentInputValue });
+      this.setData({ currentInputValue: text });
       this.changeForm(detail);
       this.triggerEvent('change', detail);
     },

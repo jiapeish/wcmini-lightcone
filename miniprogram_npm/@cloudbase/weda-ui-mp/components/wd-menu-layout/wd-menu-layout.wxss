@@ -457,10 +457,10 @@
 .wd-menulayout .is-disabled .wedatea2td-menu__item {
   cursor: not-allowed !important;
 }
-.wd-menulayout--tab .wd-menulayout-body__content {
+.wd-menulayout--tab .wd-menulayout-body__content, .wd-menulayout--navTab .wd-menulayout-body__content {
   overflow: auto;
 }
-.wd-menulayout--tab .wd-menulayout-body__left-slot {
+.wd-menulayout--tab .wd-menulayout-body__left-slot, .wd-menulayout--navTab .wd-menulayout-body__left-slot {
   position: sticky;
   bottom: 0;
   width: 100%;
@@ -468,7 +468,7 @@
   padding: 0;
   display: block;
 }
-.wd-menulayout--nav .wd-menulayout-header {
+.wd-menulayout--nav .wd-menulayout-header, .wd-menulayout--navTab .wd-menulayout-header {
   padding: 0;
 }
 

@@ -1,5 +1,5 @@
 <view id="{{id}}" style="{{style}}" class="{{classPrefix + '-layout'}} {{classPrefix + '-mp-layout-root'}} {{classPrefix + '-layout-root'}} {{className}} {{template}}">
-  <view class="{{classPrefix + '-layout__header'}} {{template}}">
+  <view class="{{classPrefix + '-layout__header'}} {{template}}"  wx:if="{{enableHeaderSlot}}">
     <view class="{{classPrefix + '-layout__header-item'}} {{classPrefix + '-layout__header-item-left'}}">
       <slot name="headerLeftSlot"></slot>
     </view>
@@ -7,7 +7,7 @@
       <slot name="headerRightSlot"></slot>
     </view>
   </view>
-  <view class="{{classPrefix + '-layout__body'}} {{template}}">
+  <view class="{{classPrefix + '-layout__body'}} {{template}}" wx:if="{{enableContentSlot}}">
     <slot name="contentSlot"></slot>
   </view>
 </view>

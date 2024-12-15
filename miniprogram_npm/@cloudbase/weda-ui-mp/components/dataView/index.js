@@ -26,7 +26,7 @@ Component({
       value: [],
     },
     queryCondition: {
-      type: Array,
+      type: null,
       value: [],
     },
     bindConnectMetadata: {
@@ -48,6 +48,18 @@ Component({
     dataSourceData: {
       type: Object,
       value: {},
+    },
+    selectFieldType: {
+      type: String,
+      value: 'main',
+    },
+    selectFields: {
+      type: Array,
+      value: [],
+    },
+    supportManyRelated: {
+      type: Boolean,
+      value: false,
     },
   },
   data: {
@@ -93,6 +105,10 @@ Component({
         record: this.data._oldData,
         refresh,
         deleteOne,
+        dataSourceVersion:
+          this.properties.datasource?.extra?.methodName === 'wedaGetRecordsV2'
+            ? 'v2'
+            : 'v1',
       });
     },
   },

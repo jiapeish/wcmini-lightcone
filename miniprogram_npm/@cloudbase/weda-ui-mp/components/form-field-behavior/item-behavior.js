@@ -435,6 +435,12 @@ export default Behavior({
         after,
       });
     },
+    // 点击前后缀文字/图标
+    inputAdornmentClick: function (e) {
+      this.triggerEvent('inputAdornmentClick', {
+        type: e.currentTarget.dataset.type,
+      });
+    },
   },
   observers: {
     'clearable,disabled,value': function (clearable, disabled, value) {

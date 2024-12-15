@@ -1,5 +1,6 @@
 {
   "components": {
+    "WdMarkdown": "components/wd-markdown/index",
     "WdUnifiedLink": "components/wd-unified-link/index",
     "WdProgress": "components/wd-progress/index",
     "Tooltip": "components/tooltip/index",
@@ -14,6 +15,7 @@
     "WdMenuVerticalLayout": "components/wd-menu-vertical-layout/index",
     "WdMenuTabLayout": "components/wd-menu-tab-layout/index",
     "WdMenuNavLayout": "components/wd-menu-nav-layout/index",
+    "WdMenuNavTabLayout": "components/wd-menu-nav-tab-layout/index",
     "WdMenuLayout": "components/wd-menu-layout/index",
     "WdMenuList": "components/wd-menu-list/index",
     "WdModal": "components/wd-modal/index",

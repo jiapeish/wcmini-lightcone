@@ -1,5 +1,6 @@
 import { getCloudInstance, getTempFileURL } from '../../../utils/tcb';
 import { transSize, randomStr } from '../../../utils/platform';
+import equal from '../../../utils/deepEqual';
 
 Component({
   options: {
@@ -22,6 +23,9 @@ Component({
       value: false,
     },
     defaultValue: {
+      type: null,
+    },
+    oldValue: {
       type: null,
     },
     maxUploadCount: {
@@ -69,6 +73,14 @@ Component({
       type: Object,
       value: null,
     },
+    uploadTipText: {
+      type: String,
+      value: '支持批量上传',
+    },
+    uploadButtonText: {
+      type: String,
+      value: '点击上传',
+    },
   },
   data: {
     maxCount: 0,
@@ -97,10 +109,7 @@ Component({
         });
         return false;
       }
-      if (
-        this.properties.maxSize &&
-        files.some((f) => f.size > this.properties.maxSize * 1024 * 1024)
-      ) {
+      if (this.properties.maxSize && files.some((f) => f.size > this.properties.maxSize * 1024 * 1024)) {
         wx.showToast({
           title: `上传文件大小不能超过${this.properties.maxSize}M`,
           icon: 'none',
@@ -146,6 +155,13 @@ Component({
         },
       });
     },
+    getName: function (hf) {
+      const uuidReg = /[0-9a-f]{8}([0-9a-f]{4}){3}[0-9a-f]{12}-/;
+      const lastIndex = String(hf).lastIndexOf('/');
+      const name = String(hf).slice(lastIndex + 1);
+      const label = name.replace(uuidReg, '');
+      return label;
+    },
     handleUpload: async function (files, reload = false) {
       var _this = this;
       if (!this.handleBefore(files)) return;
@@ -164,10 +180,7 @@ Component({
           });
           if (typeof ret === 'boolean') {
             shouldUploadToCos = ret;
-          } else if (
-            Array.Array(ret) &&
-            ret.every((i) => typeof i === 'string')
-          ) {
+          } else if (Array.Array(ret) && ret.every((i) => typeof i === 'string')) {
             files = ret.map((path, idx) => {
               files[idx].path = path;
             });
@@ -185,14 +198,12 @@ Component({
         ...i,
         percent: '0',
         cloudPath: null,
-        name: i?.name || i?.tempFilePath.slice(9),
+        name: i?.name || this.getName(i?.tempFilePath),
         filePath: i?.path || i?.tempFilePath || null,
         size: transSize(i?.size),
         status: 'pending',
       }));
-      let filelsList = reload
-        ? this.data.files
-        : [...this.data.files, ...initFiles];
+      let filelsList = reload ? this.data.files : [...this.data.files, ...initFiles];
       this.setData({
         files: filelsList,
       });
@@ -202,9 +213,7 @@ Component({
             _this.handleUploadFile({
               _tempFile: tempFile,
               onSuccess: (res) => {
-                filelsList = filelsList.map((i) =>
-                  i.filePath === res.filePath ? res : i
-                );
+                filelsList = filelsList.map((i) => (i.filePath === res.filePath ? res : i));
                 _this.triggerEvent('success', {
                   value: res.cloudPath,
                   file: res,
@@ -212,30 +221,22 @@ Component({
                 resolve(res);
               },
               onProgressUpdate: (res) => {
-                filelsList = filelsList.map((i) =>
-                  i.filePath === res.filePath ? res : i
-                );
+                filelsList = filelsList.map((i) => (i.filePath === res.filePath ? res : i));
                 _this.setData({
                   files: filelsList,
                 });
               },
               onFail: (res, error) => {
-                filelsList = filelsList.map((i) =>
-                  i.filePath === res.filePath ? res : i
-                );
+                filelsList = filelsList.map((i) => (i.filePath === res.filePath ? res : i));
                 _this.triggerEvent('error', error.detail);
                 resolve(res);
               },
             });
           });
-        })
+        }),
       ).then((res) => {
-        const result = filelsList.map(
-          (i) => res.find((j) => j.filePath === i.filePath) || i
-        );
-        const cloudPathList = result
-          .filter((i) => i.cloudPath)
-          .map((j) => j.cloudPath);
+        const result = filelsList.map((i) => res.find((j) => j.filePath === i.filePath) || i);
+        const cloudPathList = result.filter((i) => i.cloudPath).map((j) => j.cloudPath);
         this.setData({
           files: result,
           urls: cloudPathList,
@@ -244,12 +245,7 @@ Component({
         _this.handleChange(cloudPathList);
       });
     },
-    handleUploadFile: async function ({
-      _tempFile,
-      onSuccess,
-      onProgressUpdate,
-      onFail,
-    }) {
+    handleUploadFile: async function ({ _tempFile, onSuccess, onProgressUpdate, onFail }) {
       const tempFile = {
         ..._tempFile,
       };
@@ -316,20 +312,15 @@ Component({
           }
         });
         this.setData({
-          files: this.data.files.filter(
-            (v) => e.target.dataset.item.cloudPath !== v.cloudPath
-          ),
+          files: this.data.files.filter((v) => e.target.dataset.item.cloudPath !== v.cloudPath),
           urls: newUrls,
         });
       } else {
         const filelist = this.data.files.filter(
           (item) =>
-            e.target.dataset.item?.path != item?.path ||
-            e.target.dataset.item?.tempFilePath != item?.tempFilePath
+            e.target.dataset.item?.path != item?.path || e.target.dataset.item?.tempFilePath != item?.tempFilePath,
         );
-        newUrls = this.data.urls.filter(
-          (v) => e.target.dataset.item?.cloudPath != v
-        );
+        newUrls = this.data.urls.filter((v) => e.target.dataset.item?.cloudPath != v);
         this.setData({
           files: filelist,
           urls: newUrls,
@@ -344,6 +335,7 @@ Component({
       if (this.properties.single) {
         value = values[0] ?? '';
       }
+      this.setData({ oldValue: value });
       this.triggerEvent('change', { value });
     },
 
@@ -420,6 +412,9 @@ Component({
   },
   observers: {
     defaultValue: async function (value) {
+      if (equal(this.data.oldValue, value)) {
+        return;
+      }
       //当单图片上传且默认值为空数组时，初次渲染更新value，以避免空串提交类型不匹配问题
       if (Array.isArray(value) && !this.data.singleFlag) {
         this.setData({
@@ -433,10 +428,7 @@ Component({
         for (let f of values) {
           if (f.startsWith('cloud:')) {
             const hf = await getTempFileURL(f);
-            const uuidReg = /[0-9a-f]{8}([0-9a-f]{4}){3}[0-9a-f]{12}-/;
-            const lastIndex = String(hf).lastIndexOf('/');
-            const name = String(hf).slice(lastIndex + 1);
-            const label = name.replace(uuidReg, '');
+            const label = this.getName(hf);
             const httpFile = {
               name: label,
               cloudPath: f,
@@ -447,19 +439,14 @@ Component({
             httpFiles.push(httpFile);
           }
         }
-        const files = this.data.files;
-        // 文件上传成功也会触发defaultValue变化，此情况不执行初始化文件列表
-        if (!files?.length) {
-          this.setData({
-            files: httpFiles,
-            cloudFile:
-              JSON.stringify(value) != JSON.stringify(this.data.cloudFile)
-                ? [].concat(value)
-                : [],
-          });
-        }
+        this.setData({
+          oldValue: value,
+          files: httpFiles,
+          cloudFile: JSON.stringify(value) != JSON.stringify(this.data.cloudFile) ? [].concat(value) : [],
+        });
       } else {
         this.setData({
+          oldValue: value,
           files: [],
           cloudFile: [],
         });
@@ -473,8 +460,7 @@ Component({
     },
     'layout,extClass': function (layout, extClass) {
       const temp = `weda-formcells weui-cells weui-cells_forms ${extClass}`;
-      const layoutCls =
-        layout !== 'vertical' ? ` weui-flex ${temp}` : `${temp}`;
+      const layoutCls = layout !== 'vertical' ? ` weui-flex ${temp}` : `${temp}`;
       this.setData({ layoutCls });
     },
   },

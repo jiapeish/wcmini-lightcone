@@ -6,9 +6,9 @@
         {{label}}
       </view>
       <view class="weda-uploader-files__btn-contain">
-        <button class="weui-btn weda-uploader-files__btn" bindtap="onButtonTap" disabled="{{disabled}}">上传文件</button>
+        <button class="weui-btn weda-uploader-files__btn" bindtap="onButtonTap" disabled="{{disabled}}">{{uploadButtonText}}</button>
 
-        <view wx:if="{{maxCount!=1}}" class="weda-uploader-files__tips">支持批量上传</view>
+        <view wx:if="{{maxCount!=1}}" class="weda-uploader-files__tips">{{uploadTipText}}</view>
         <view wx:else>
           <slot name="tips"></slot>
         </view>

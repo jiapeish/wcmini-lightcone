@@ -20,6 +20,9 @@
   bindattached="handleEvent"
   isRecords="{{false}}"
   refType="dataView"
+  supportManyRelated="{{supportManyRelated}}"
+  selectFields="{{selectFields}}"
+  selectFieldType="{{selectFieldType}}"
 >
   <slot></slot>
 </list-view>

@@ -12,6 +12,15 @@
   width: fit-content;
   width: 100%;
 }
+.wd-form-obj-root .wd-form-obj .wd-form-item.size-width-sm {
+  width: 100%;
+}
+.wd-form-obj-root .wd-form-obj .wd-form-item.size-width-md {
+  width: 100%;
+}
+.wd-form-obj-root .wd-form-obj .wd-form-item.size-width-lg {
+  width: 100%;
+}
 .wd-form-obj-root.size-width-sm {
   width: 100%;
 }
@@ -25,10 +34,11 @@
   width: 100%;
 }
 .wd-form-obj-root .wd-form-item-wrap .wd-form-item-wrap__control {
-  overflow: hidden;
+  overflow: unset;
 }
 .wd-form-obj-root .wd-form-item-wrap .wd-card-root {
   width: 100%;
+  overflow: hidden;
 }
 .wd-form-obj-root .wd-form-item-wrap .wd-card-root.wd-card-content__hidden .wd-card__body {
   height: 0;

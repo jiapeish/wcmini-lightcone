@@ -1,5 +1,5 @@
 import dayjs from './dayjs.min.js';
-
+import { errorHandler } from './error.js';
 export const isDateNil = (v) => v === '' || v == null;
 
 // 将时间值转 dayjs 类型
@@ -11,6 +11,10 @@ export const convertDayjs = (val) => {
     if (!m?.isValid()) return null;
   } catch (e) {
     console.warn('[function convertDayjs]: ', e);
+    errorHandler({
+      code: 'ConvertDayjsError',
+      error: e,
+    });
   }
   return m;
 };

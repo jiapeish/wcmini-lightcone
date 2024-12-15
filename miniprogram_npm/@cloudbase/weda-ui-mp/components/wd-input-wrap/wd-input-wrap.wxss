@@ -119,6 +119,9 @@
   display: flex;
   align-items: center;
 }
+.wd-form-input-wrap__content .weui-cell_active:active::after {
+  background-color: unset;
+}
 .wd-form-input-wrap.wd-input-input-search.template.search-box.color-grey.is-pc-bordered {
   background-color: #f2f2f2;
   border-color: #f2f2f2;
